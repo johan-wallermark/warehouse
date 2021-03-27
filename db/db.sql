@@ -1,0 +1,23 @@
+CREATE DATABASE warehouse;
+
+\c warehouse;
+
+CREATE TABLE IF NOT EXISTS articles(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    stock INT NOT NULL
+    CHECK (stock >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS products(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    price INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products_articles(
+    art_id INTEGER REFERENCES articles(id),
+    prod_id INTEGER REFERENCES products(id),
+    art_quantity INT NOT NULL,
+    UNIQUE (art_id, prod_id)
+);
