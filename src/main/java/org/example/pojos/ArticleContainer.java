@@ -15,4 +15,11 @@ public class ArticleContainer {
     public void setArticles(List<Article> articles) {
         this.articles = articles;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleContainer{" +
+                "articles=" + articles +
+                '}';
+    }
 }
