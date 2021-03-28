@@ -4,10 +4,12 @@ Based on Javalin with a helm chart.
 
 ## Requirements:
 
-    * Java 11
-    * Docker
-    * Helm
-    * Postgres
+* Java 8+ (for gradle, application uses 15 but is downloaded automatically by
+    gradle if not available)
+* Docker
+* Kubernetes
+* Helm
+* Postgres
 
 ## Dev Setup
 
