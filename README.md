@@ -31,7 +31,7 @@ To build the source code and create a docker image run:
 ./gradlew build jibDockerBuild
 ```
 
-Note that jibDockerBuild builds towards a Docker daemon rather then directly
+Note that jibDockerBuild builds towards a Docker daemon rather than directly
 towards a repository.
 
 ## Installing the helm chart

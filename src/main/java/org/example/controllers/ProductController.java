@@ -1,7 +1,7 @@
 package org.example.controllers;
 
 import io.javalin.http.Context;
-import io.javalin.plugin.openapi.annotations.*;
+import io.javalin.openapi.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.pojos.AvailableProduct;
@@ -22,7 +22,7 @@ public class ProductController {
 
     @OpenApi(
             path = "/products",
-            method = HttpMethod.PUT,
+            methods = HttpMethod.PUT,
             description = "Adds products to the database. Note that articles that the product is comprised of needs to be created first.",
             requestBody = @OpenApiRequestBody(content = @OpenApiContent(from = Product.class)),
             responses = {
@@ -63,7 +63,7 @@ public class ProductController {
 
     @OpenApi(
             path = "/products",
-            method = HttpMethod.GET,
+            methods = HttpMethod.GET,
             description = "Returns all products that are available for sale based on the available stock.",
             responses = {
                     @OpenApiResponse(status = "201", content = @OpenApiContent(from = AvailableProduct[].class)),
@@ -96,7 +96,7 @@ public class ProductController {
 
     @OpenApi(
             path = "/products",
-            method = HttpMethod.DELETE,
+            methods = HttpMethod.DELETE,
             description = "Sells the product reducing the available stock for the articles that make up the product.",
             requestBody = @OpenApiRequestBody(content = @OpenApiContent(from = AvailableProduct.class)),
             responses = {

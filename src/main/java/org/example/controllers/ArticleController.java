@@ -1,7 +1,7 @@
 package org.example.controllers;
 
 import io.javalin.http.Context;
-import io.javalin.plugin.openapi.annotations.*;
+import io.javalin.openapi.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.pojos.ArticleContainer;
@@ -18,7 +18,7 @@ public class ArticleController {
 
     @OpenApi(
             path = "/articles",
-            method = HttpMethod.PUT,
+            methods = HttpMethod.PUT,
             description = "Adds articles to the database.",
             requestBody = @OpenApiRequestBody(content = @OpenApiContent(from = ArticleContainer.class)),
             responses = {
