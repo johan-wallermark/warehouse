@@ -1,8 +1,8 @@
 package org.example;
 
 import io.javalin.Javalin;
-import io.javalin.openapi.plugin.OpenApiConfiguration;
 import io.javalin.openapi.plugin.OpenApiPlugin;
+import io.javalin.openapi.plugin.OpenApiPluginConfiguration;
 import io.javalin.openapi.plugin.swagger.SwaggerConfiguration;
 import io.javalin.openapi.plugin.swagger.SwaggerPlugin;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +35,7 @@ public class Warehouse {
 
         app = Javalin
                 .create(config -> {
-                    String deprecatedDocsPath = "/swagger-docs";
+                    var deprecatedDocsPath = "/api/openapi.json";
                     config.plugins.register(new OpenApiPlugin(getOpenApiConfiguration(deprecatedDocsPath)));
 
                     config.plugins.register(new SwaggerPlugin(getSwaggerConfiguration(deprecatedDocsPath)));
@@ -61,25 +61,28 @@ public class Warehouse {
     @NotNull
     private SwaggerConfiguration getSwaggerConfiguration(String deprecatedDocsPath) {
         SwaggerConfiguration swaggerConfiguration = new SwaggerConfiguration();
-
-        swaggerConfiguration.setUiPath("/swagger"); // by default it's /swagger
         swaggerConfiguration.setDocumentationPath(deprecatedDocsPath);
-        swaggerConfiguration.setTitle("Demo app - Documentation");
-//        swaggerConfiguration.setVersion("0.1.1");
-
         return swaggerConfiguration;
     }
 
     @NotNull
-    private OpenApiConfiguration getOpenApiConfiguration(String deprecatedDocsPath) {
-        OpenApiConfiguration openApiConfiguration = new OpenApiConfiguration();
-
-        openApiConfiguration.getInfo().setTitle("Demo app - Documentation");
-        openApiConfiguration.getInfo().setVersion("0.1.1");
-        openApiConfiguration.setDocumentationPath(deprecatedDocsPath); // by default it's /openapi
-        openApiConfiguration.getInfo().setDescription("Demo warehouse application that has inventory consisting of Articles take make up Products.");
-
-        return openApiConfiguration;
+    private OpenApiPluginConfiguration getOpenApiConfiguration(String documentationPath) {
+        return new OpenApiPluginConfiguration()
+                .withDocumentationPath(documentationPath)
+                .withDefinitionConfiguration((version, definition) -> definition
+                        .withOpenApiInfo((openApiInfo) -> {
+                            openApiInfo.setTitle("Demo app - Documentation");
+                            openApiInfo.setVersion("1.0.0");
+                            openApiInfo.setDescription("Demo warehouse application that has inventory consisting of Articles take make up Products.");
+                        })
+                        .withServer((openApiServer) -> {
+                            openApiServer.setUrl(("http://localhost:{port}{basePath}/" + version + "/"));
+                            openApiServer.setDescription("Server description goes here");
+                            openApiServer.addVariable("port", "7000", new String[]{"7000", "8080"}, "Port of the server");
+                            openApiServer.addVariable("basePath", "", new String[]{"", "v1"}, "Base path of the server");
+                        })
+                )
+                ;
     }
 
     private void addShutdownHook() {

@@ -17,6 +17,7 @@ repositories {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(19)
+        vendor = JvmVendorSpec.ADOPTIUM
     }
 }
 
@@ -33,32 +34,34 @@ configurations {
 }
 
 dependencies {
-    def openapi = "5.1.4"
     // Javalin
-    implementation 'io.javalin:javalin:5.1.4'
+    def openapi = "5.4.2"
+    implementation 'io.javalin:javalin:5.4.2'
     annotationProcessor("io.javalin.community.openapi:openapi-annotation-processor:$openapi")
     implementation("io.javalin.community.openapi:javalin-openapi-plugin:$openapi")
     implementation("io.javalin.community.openapi:javalin-swagger-plugin:$openapi")
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
     // Logging
-    implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
-    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.19.0'
+    implementation platform('org.apache.logging.log4j:log4j-bom:2.20.0')
+    implementation 'org.apache.logging.log4j:log4j-api'
+    implementation 'org.apache.logging.log4j:log4j-core'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl'
+    implementation 'org.slf4j:slf4j-simple:2.0.6'
 
     // DB
-    implementation platform('org.jdbi:jdbi3-bom:3.18.1')
+    implementation platform('org.jdbi:jdbi3-bom:3.37.1')
     implementation 'org.jdbi:jdbi3-core'
     implementation 'org.jdbi:jdbi3-postgres'
     implementation 'org.jdbi:jdbi3-sqlobject'
     implementation 'com.zaxxer:HikariCP:5.0.1'
-    implementation 'org.postgresql:postgresql:42.5.0'
+    implementation 'org.postgresql:postgresql:42.5.4'
 
     // Test
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    integTestImplementation 'io.rest-assured:rest-assured:5.2.0'
+    integTestImplementation 'io.rest-assured:rest-assured:5.3.0'
 }
 
 test {
@@ -79,7 +82,7 @@ check.dependsOn integrationTest
 
 jib {
     from {
-        image = 'adoptopenjdk:19-jre-hotspot'
+        image = 'eclipse-temurin:19.0.2_7-jre-jammy'
     }
     to {
         image = 'demo/warehouse'
