@@ -13,7 +13,6 @@ import org.example.db.DataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
 import org.jdbi.v3.postgres.PostgresPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public class Warehouse {
     private static final Logger logger = LogManager.getLogger();
@@ -58,14 +57,12 @@ public class Warehouse {
         logger.info("Application is now running.");
     }
 
-    @NotNull
     private SwaggerConfiguration getSwaggerConfiguration(String deprecatedDocsPath) {
         SwaggerConfiguration swaggerConfiguration = new SwaggerConfiguration();
         swaggerConfiguration.setDocumentationPath(deprecatedDocsPath);
         return swaggerConfiguration;
     }
 
-    @NotNull
     private OpenApiPluginConfiguration getOpenApiConfiguration(String documentationPath) {
         return new OpenApiPluginConfiguration()
                 .withDocumentationPath(documentationPath)
